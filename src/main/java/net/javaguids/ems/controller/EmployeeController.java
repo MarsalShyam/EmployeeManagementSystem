@@ -4,19 +4,17 @@ import net.javaguids.ems.dto.EmployeeDto;
 import net.javaguids.ems.service.EmployeeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api/employees")
 @RestController
 public class EmployeeController {
+
+    //constructor
     public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
     }
-
-    private EmployeeService employeeService;
+    private final EmployeeService employeeService;
 
     //Building add Employee REST API
     @PostMapping
@@ -25,5 +23,12 @@ public class EmployeeController {
         return new ResponseEntity<>(
                 savedEmployee, HttpStatus.CREATED
         );
+    }
+
+    //Building Get Employee REST API
+    @GetMapping("{id}")
+    public ResponseEntity<EmployeeDto> getEmployeeById(@PathVariable("id") long employeeId){
+        EmployeeDto employeeDto=employeeService.getEmployeeById(employeeId);
+        return ResponseEntity.ok(employeeDto);
     }
 }
